@@ -413,12 +413,30 @@
       }
     });
 
-    // Unmute audio on first user click
+    // Unmute audio on first user click with fade-in effect
     document.addEventListener('click', () => {
       const audio = document.getElementById('bgMusic');
       if (audio) {
         audio.muted = false;
-        console.log('Music unmuted! 🎵');
+        audio.volume = 0; // Start at 0 volume
+
+        // Fade in over 3 seconds
+        const fadeInDuration = 3000; // 3 seconds in milliseconds
+        const startTime = Date.now();
+        const targetVolume = 1; // Full volume (0-1)
+
+        const fadeIn = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / fadeInDuration, 1);
+          audio.volume = progress * targetVolume;
+
+          if (progress < 1) {
+            requestAnimationFrame(fadeIn);
+          }
+        };
+
+        fadeIn();
+        console.log('🎵 Music fading in...');
       }
     }, { once: true });
 
