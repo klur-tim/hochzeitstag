@@ -392,8 +392,8 @@
     </div>
   </div>
 
-  <!-- Background Music Player -->
-  <audio id="bgMusic" autoplay loop style="display: none;">
+  <!-- Background Music Player (starts muted, unmutes on click) -->
+  <audio id="bgMusic" autoplay muted loop style="display: none;">
     <source src="./music.mp3" type="audio/mpeg">
   </audio>
 
@@ -408,15 +408,19 @@
       if (audio) {
         audio.currentTime = 140; // Start at 2:20
         audio.play().catch(error => {
-          console.log('Autoplay prevented:', error);
-          // User interaction might be needed
-          document.addEventListener('click', () => {
-            audio.currentTime = 140;
-            audio.play().catch(err => console.log('Play failed:', err));
-          }, { once: true });
+          console.log('Autoplay with mute started');
         });
       }
     });
+
+    // Unmute audio on first user click
+    document.addEventListener('click', () => {
+      const audio = document.getElementById('bgMusic');
+      if (audio) {
+        audio.muted = false;
+        console.log('Music unmuted! 🎵');
+      }
+    }, { once: true });
 
     // Handle viewport changes
     window.addEventListener('orientationchange', () => {
