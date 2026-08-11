@@ -392,14 +392,9 @@
     </div>
   </div>
 
-  <!-- Hidden Spotify Player (using iframe embed) -->
-  <div class="music-player">
-    <iframe src="https://open.spotify.com/embed/track/5f6EUmXVbWx4zEEHs3fKVc?utm_source=generator&autoplay=1" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </div>
-
-  <!-- Fallback Audio with YouTube video (in case Spotify doesn't autoplay) -->
-  <audio autoplay loop style="display: none;">
-    <source src="https://www.youtube.com/watch?v=qO3jHKUhkAM" type="audio/mpeg">
+  <!-- Background Music Player -->
+  <audio id="bgMusic" autoplay loop style="display: none;">
+    <source src="./music.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -407,14 +402,16 @@
     document.documentElement.style.height = '100vh';
     document.documentElement.style.height = '100dvh';
 
-    // Attempt to play background music
+    // Play background music starting at 2:20 (140 seconds)
     window.addEventListener('load', () => {
-      const audio = document.querySelector('audio');
+      const audio = document.getElementById('bgMusic');
       if (audio) {
+        audio.currentTime = 140; // Start at 2:20
         audio.play().catch(error => {
           console.log('Autoplay prevented:', error);
           // User interaction might be needed
           document.addEventListener('click', () => {
+            audio.currentTime = 140;
             audio.play().catch(err => console.log('Play failed:', err));
           }, { once: true });
         });
